@@ -25,6 +25,13 @@ export default function Layout() {
           headerShown: false,
         }}
       />
+      <Tabs.Screen
+        name="technical-faq"
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
 }

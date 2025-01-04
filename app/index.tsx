@@ -4,21 +4,11 @@ import { useState, useCallback } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import "../global.css";
 import { PRODUCTS } from '../data/products';
-
-type Product = {
-  id: string;
-  product_id: string;
-  product: string;
-  tags: string;
-  DEHP_equivalents_ng_g: string | number;
-  DEHP_ng_g: string | number;
-  blinded_photo: string;
-  collected_at: string;
-  expiration_date: string;
-};
+import { ProductListItem } from '../components/ProductListItem';
+import { ProductType } from './types';
 
 export default function App() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<ProductType | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredProducts = PRODUCTS.filter(product => 
@@ -28,37 +18,6 @@ export default function App() {
   const handleSearch = useCallback((text: string) => {
     setSearchQuery(text);
   }, []);
-
-  const renderProduct = ({ item }: { item: Product }) => (
-    <Pressable
-      onPress={() => setSelectedProduct(item)}
-      className="flex-row items-center p-4 bg-white rounded-lg mb-2 shadow-sm"
-    >
-      <View className="w-12 h-12 mr-4 bg-gray-100 rounded-lg overflow-hidden">
-        <Image
-          source={{ 
-            uri: `https://www.plasticlist.org/_next/image?url=/images/products/${item.blinded_photo}&w=1080&q=75` 
-          }}
-          className="w-full h-full"
-        />
-      </View>
-      <View className="flex-1">
-        <Text className="text-lg font-semibold">{item.product}</Text>
-        <Text
-          className={`text-sm ${
-            Number(item.DEHP_equivalents_ng_g) < 50
-              ? "text-green-600"
-              : Number(item.DEHP_equivalents_ng_g) < 100
-                ? "text-yellow-600"
-                : "text-red-600"
-          }`}
-        >
-          DEHP Level: {item.DEHP_equivalents_ng_g}
-        </Text>
-      </View>
-      <Text className="text-gray-400">→</Text>
-    </Pressable>
-  );
 
   return (
     <SafeAreaView className="flex-1 bg-[#f8fcf8] px-4 pt-8">
@@ -114,7 +73,9 @@ export default function App() {
       ) : (
         <FlashList
           data={filteredProducts}
-          renderItem={renderProduct}
+          renderItem={({ item }) => (
+            <ProductListItem item={item} onPress={setSelectedProduct} />
+          )}
           estimatedItemSize={600}
           className="flex-1"
           keyExtractor={(item) => item.id}
