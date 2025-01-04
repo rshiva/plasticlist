@@ -28,7 +28,7 @@ export default function Faq() {
          )}
        </View>
        {openItem === index && item.answer && (
-         <Text className="mt-4 text-[#5b8c5b]">{item.answer}</Text>
+         <Text className="mt-4 text-[#5b8c5b] text-base">{item.answer}</Text>
        )}
      </TouchableOpacity>
     );

@@ -26,6 +26,16 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
+        name="team"
+        options={{
+          title: "Team",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="users" color={color} size={size} />
+          ),
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
         name="technical-faq"
         options={{
           href: null,
