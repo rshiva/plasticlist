@@ -61,11 +61,11 @@ export default function App() {
   );
 
   return (
-    <View className="flex-1 bg-white px-4 pt-8">
+    <View className="flex-1 bg-[#f8fcf8] px-4 pt-8">
       <Text className="text-3xl font-bold mb-4">Products</Text>
 
       <View className="flex-row items-center bg-[#f0f9f0] rounded-lg p-3 mb-6">
-        <TextInput 
+        <TextInput
           placeholder="Search food products"
           className="flex-1 ml-2 text-base"
           placeholderTextColor="#666"
@@ -75,10 +75,7 @@ export default function App() {
           autoCorrect={false}
         />
         {searchQuery.length > 0 && (
-          <Pressable 
-            onPress={() => setSearchQuery('')}
-            className="p-2"
-          >
+          <Pressable onPress={() => setSearchQuery("")} className="p-2">
             <Text className="text-gray-500">✕</Text>
           </Pressable>
         )}
@@ -86,19 +83,29 @@ export default function App() {
 
       {selectedProduct ? (
         <View className="flex-1">
-          <Pressable 
+          <Pressable
             onPress={() => setSelectedProduct(null)}
             className="flex-row items-center mb-4"
           >
             <Text className="text-blue-500">← Back to list</Text>
           </Pressable>
-          
+
           <View className="p-4 bg-white rounded-lg shadow-sm">
-            <Text className="text-2xl font-bold mb-2">{selectedProduct.product}</Text>
-            <Text className="text-gray-600 mb-4">Location: {selectedProduct.collected_at}</Text>
-            <Text className="text-lg mb-2">DEHP Level: {selectedProduct.DEHP_equivalents_ng_g}</Text>
-            <Text className="text-lg mb-2">Raw DEHP: {selectedProduct.DEHP_ng_g}</Text>
-            <Text className="text-lg">Expires: {selectedProduct.expiration_date}</Text>
+            <Text className="text-2xl font-bold mb-2">
+              {selectedProduct.product}
+            </Text>
+            <Text className="text-gray-600 mb-4">
+              Location: {selectedProduct.collected_at}
+            </Text>
+            <Text className="text-lg mb-2">
+              DEHP Level: {selectedProduct.DEHP_equivalents_ng_g}
+            </Text>
+            <Text className="text-lg mb-2">
+              Raw DEHP: {selectedProduct.DEHP_ng_g}
+            </Text>
+            <Text className="text-lg">
+              Expires: {selectedProduct.expiration_date}
+            </Text>
           </View>
         </View>
       ) : (
@@ -107,7 +114,7 @@ export default function App() {
           renderItem={renderProduct}
           estimatedItemSize={600}
           className="flex-1"
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
         />
       )}
     </View>
