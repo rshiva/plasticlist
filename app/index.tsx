@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, TextInput, View, Pressable, Image } from 'react-native';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import "../global.css";
 import { PRODUCTS } from '../data/products';
@@ -19,6 +19,15 @@ type Product = {
 
 export default function App() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredProducts = PRODUCTS.filter(product => 
+    product.product.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearch = useCallback((text: string) => {
+    setSearchQuery(text);
+  }, []);
 
   const renderProduct = ({ item }: { item: Product }) => (
     <Pressable
@@ -60,7 +69,19 @@ export default function App() {
           placeholder="Search food products"
           className="flex-1 ml-2 text-base"
           placeholderTextColor="#666"
+          value={searchQuery}
+          onChangeText={handleSearch}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
+        {searchQuery.length > 0 && (
+          <Pressable 
+            onPress={() => setSearchQuery('')}
+            className="p-2"
+          >
+            <Text className="text-gray-500">✕</Text>
+          </Pressable>
+        )}
       </View>
 
       {selectedProduct ? (
@@ -82,10 +103,11 @@ export default function App() {
         </View>
       ) : (
         <FlashList
-          data={PRODUCTS}
+          data={filteredProducts}
           renderItem={renderProduct}
           estimatedItemSize={600}
           className="flex-1"
+          keyExtractor={item => item.id}
         />
       )}
     </View>
