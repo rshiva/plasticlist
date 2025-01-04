@@ -7,9 +7,13 @@ export default function Layout() {
     <Tabs>
       <Tabs.Screen
         name="index"
-        options={{ title: "Products", tabBarIcon: ({ color, size }) => (
-          <Feather name="home" color={color} size={size} />
-        ), }}
+        options={{
+          title: "Products",
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" color={color} size={size} />
+          ),
+          headerShown: false,
+        }}
       />
       <Tabs.Screen
         name="faq"
@@ -18,6 +22,7 @@ export default function Layout() {
           tabBarIcon: ({ color, size }) => (
             <Feather name="help-circle" color={color} size={size} />
           ),
+          headerShown: false,
         }}
       />
     </Tabs>

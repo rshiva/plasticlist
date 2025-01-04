@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import { useState } from "react";
 import { ChevronUp, ChevronDown, X } from "lucide-react-native";
 
@@ -30,12 +30,9 @@ export default function Faq() {
   ];
 
   return (
-    <View className="flex-1 bg-[#f8fcf8] px-4 pt-8">
-      <View className="flex-row justify-between items-center mb-8">
+    <SafeAreaView className="flex-1 bg-[#f8fcf8] px-4 pt-8">
+      <View className="flex justify-between items-center mb-8">
         <Text className="text-3xl font-bold">FAQ</Text>
-        <TouchableOpacity>
-          <X size={24} />
-        </TouchableOpacity>
       </View>
 
       {faqItems.map((item, index) => (
@@ -57,7 +54,7 @@ export default function Faq() {
           )}
         </TouchableOpacity>
       ))}
-    </View>
+    </SafeAreaView>
   );
 }
 

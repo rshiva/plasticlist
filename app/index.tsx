@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, TextInput, View, Pressable, Image } from 'react-native';
+import { Text, TextInput, View, Pressable, Image, SafeAreaView } from 'react-native';
 import { useState, useCallback } from 'react';
 import { FlashList } from '@shopify/flash-list';
 import "../global.css";
@@ -61,25 +61,28 @@ export default function App() {
   );
 
   return (
-    <View className="flex-1 bg-[#f8fcf8] px-4 pt-8">
-      <Text className="text-3xl font-bold mb-4">Products</Text>
-
-      <View className="flex-row items-center bg-[#f0f9f0] rounded-lg p-3 mb-6">
-        <TextInput
-          placeholder="Search food products"
-          className="flex-1 ml-2 text-base"
-          placeholderTextColor="#666"
-          value={searchQuery}
-          onChangeText={handleSearch}
-          autoCapitalize="none"
-          autoCorrect={false}
-        />
-        {searchQuery.length > 0 && (
-          <Pressable onPress={() => setSearchQuery("")} className="p-2">
-            <Text className="text-gray-500">✕</Text>
-          </Pressable>
-        )}
+    <SafeAreaView className="flex-1 bg-[#f8fcf8] px-4 pt-8">
+      <View className="flex justify-between items-center mb-8">
+        <Text className="text-3xl font-bold mb-4">Products</Text>
       </View>
+      {!selectedProduct && (
+        <View className="flex-row items-center bg-[#f0f9f0] rounded-lg p-3 mb-6">
+          <TextInput
+            placeholder="Search food products"
+            className="flex-1 ml-2 text-base"
+            placeholderTextColor="#666"
+            value={searchQuery}
+            onChangeText={handleSearch}
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          {searchQuery.length > 0 && (
+            <Pressable onPress={() => setSearchQuery("")} className="p-2">
+              <Text className="text-gray-500">✕</Text>
+            </Pressable>
+          )}
+        </View>
+      )}
 
       {selectedProduct ? (
         <View className="flex-1">
@@ -117,6 +120,6 @@ export default function App() {
           keyExtractor={(item) => item.id}
         />
       )}
-    </View>
+    </SafeAreaView> 
   );
 }
