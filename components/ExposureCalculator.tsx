@@ -9,7 +9,7 @@ type SelectedProduct = {
   quantity: number;
 };
 
-type ChemicalGroup = 'phthalates' | 'bisphenols' | 'alternatives';
+// type ChemicalGroup = 'phthalates' | 'bisphenols' | 'alternatives';
 type ExposureLevel = 'safe' | 'moderate' | 'high';
 
 export function ExposureCalculator() {
@@ -99,33 +99,47 @@ export function ExposureCalculator() {
     const totals = calculateTotalExposure(selectedProducts);
 
     return (
-      <SafeAreaView className="mt-6">
+      <SafeAreaView className="mt-6 ">
         <Text className="text-xl font-bold mb-4">Total Daily Exposure</Text>
-        
+
         {/* Phthalates */}
         <View className="bg-white rounded-lg p-4 mb-4">
           <Text className="text-lg font-semibold mb-2">Phthalates</Text>
           {Object.entries(totals)
-            .filter(([key]) => ['DEHP', 'DBP', 'BBP', 'DINP', 'DIDP'].includes(key))
+            .filter(([key]) =>
+              ["DEHP", "DBP", "BBP", "DINP", "DIDP"].includes(key)
+            )
             .map(([chemical, value]) => {
               const level = getExposureLevel(value, chemical);
               return (
-                <View key={chemical} className="flex-row justify-between items-center py-1">
+                <View
+                  key={chemical}
+                  className="flex-row justify-between items-center py-1"
+                >
                   <Text>{chemical}:</Text>
                   <View className="flex-row items-center">
-                    <Text className={`
-                      ${level === 'safe' ? 'text-green-600' : 
-                        level === 'moderate' ? 'text-yellow-600' : 
-                        'text-red-600'
+                    <Text
+                      className={`
+                      ${
+                        level === "safe"
+                          ? "text-green-600"
+                          : level === "moderate"
+                            ? "text-yellow-600"
+                            : "text-red-600"
                       } mr-2
-                    `}>
+                    `}
+                    >
                       {Math.round(value)} ng/serving
                     </Text>
-                    <View className={`w-3 h-3 rounded-full ${
-                      level === 'safe' ? 'bg-green-500' : 
-                      level === 'moderate' ? 'bg-yellow-500' : 
-                      'bg-red-500'
-                    }`} />
+                    <View
+                      className={`w-3 h-3 rounded-full ${
+                        level === "safe"
+                          ? "bg-green-500"
+                          : level === "moderate"
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                      }`}
+                    />
                   </View>
                 </View>
               );
@@ -136,26 +150,38 @@ export function ExposureCalculator() {
         <View className="bg-white rounded-lg p-4 mb-4">
           <Text className="text-lg font-semibold mb-2">Bisphenols</Text>
           {Object.entries(totals)
-            .filter(([key]) => ['BPA', 'BPS', 'BPF'].includes(key))
+            .filter(([key]) => ["BPA", "BPS", "BPF"].includes(key))
             .map(([chemical, value]) => {
               const level = getExposureLevel(value, chemical);
               return (
-                <View key={chemical} className="flex-row justify-between items-center py-1">
+                <View
+                  key={chemical}
+                  className="flex-row justify-between items-center py-1"
+                >
                   <Text>{chemical}:</Text>
                   <View className="flex-row items-center">
-                    <Text className={`
-                      ${level === 'safe' ? 'text-green-600' : 
-                        level === 'moderate' ? 'text-yellow-600' : 
-                        'text-red-600'
+                    <Text
+                      className={`
+                      ${
+                        level === "safe"
+                          ? "text-green-600"
+                          : level === "moderate"
+                            ? "text-yellow-600"
+                            : "text-red-600"
                       } mr-2
-                    `}>
+                    `}
+                    >
                       {Math.round(value)} ng/serving
                     </Text>
-                    <View className={`w-3 h-3 rounded-full ${
-                      level === 'safe' ? 'bg-green-500' : 
-                      level === 'moderate' ? 'bg-yellow-500' : 
-                      'bg-red-500'
-                    }`} />
+                    <View
+                      className={`w-3 h-3 rounded-full ${
+                        level === "safe"
+                          ? "bg-green-500"
+                          : level === "moderate"
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                      }`}
+                    />
                   </View>
                 </View>
               );
@@ -164,28 +190,42 @@ export function ExposureCalculator() {
 
         {/* Alternative Plasticizers */}
         <View className="bg-white rounded-lg p-4 mb-4">
-          <Text className="text-lg font-semibold mb-2">Alternative Plasticizers</Text>
+          <Text className="text-lg font-semibold mb-2">
+            Alternative Plasticizers
+          </Text>
           {Object.entries(totals)
-            .filter(([key]) => ['DEHT', 'DEHA', 'DINCH', 'DIDA'].includes(key))
+            .filter(([key]) => ["DEHT", "DEHA", "DINCH", "DIDA"].includes(key))
             .map(([chemical, value]) => {
               const level = getExposureLevel(value, chemical);
               return (
-                <View key={chemical} className="flex-row justify-between items-center py-1">
+                <View
+                  key={chemical}
+                  className="flex-row justify-between items-center py-1"
+                >
                   <Text>{chemical}:</Text>
                   <View className="flex-row items-center">
-                    <Text className={`
-                      ${level === 'safe' ? 'text-green-600' : 
-                        level === 'moderate' ? 'text-yellow-600' : 
-                        'text-red-600'
+                    <Text
+                      className={`
+                      ${
+                        level === "safe"
+                          ? "text-green-600"
+                          : level === "moderate"
+                            ? "text-yellow-600"
+                            : "text-red-600"
                       } mr-2
-                    `}>
+                    `}
+                    >
                       {Math.round(value)} ng/serving
                     </Text>
-                    <View className={`w-3 h-3 rounded-full ${
-                      level === 'safe' ? 'bg-green-500' : 
-                      level === 'moderate' ? 'bg-yellow-500' : 
-                      'bg-red-500'
-                    }`} />
+                    <View
+                      className={`w-3 h-3 rounded-full ${
+                        level === "safe"
+                          ? "bg-green-500"
+                          : level === "moderate"
+                            ? "bg-yellow-500"
+                            : "bg-red-500"
+                      }`}
+                    />
                   </View>
                 </View>
               );
@@ -193,16 +233,28 @@ export function ExposureCalculator() {
         </View>
 
         <View className="bg-gray-50 rounded-lg p-4 mt-4">
-          <Text className="text-sm text-gray-600 font-medium mb-2">Understanding the measurements:</Text>
+          <Text className="text-sm text-gray-600 font-medium mb-2">
+            Understanding the measurements:
+          </Text>
           <View className="space-y-2">
-            <Text className="text-sm text-gray-500">• Values marked as "&lt;LOQ" (Below Limit of Quantification) are counted as 0</Text>
-            <Text className="text-sm text-gray-500">• Values marked as "&lt;X" (e.g., "&lt;3700") use half of that threshold, following common environmental sampling practice</Text>
-            <Text className="text-sm text-gray-500">• "NO TDI" (No Tolerable Daily Intake) and "NO RfD" (No Reference Dose) are counted as 0</Text>
+            <Text className="text-sm text-gray-500">
+              • Values marked as "&lt;LOQ" (Below Limit of Quantification) are
+              counted as 0
+            </Text>
+            <Text className="text-sm text-gray-500">
+              • Values marked as "&lt;X" (e.g., "&lt;3700") use half of that
+              threshold, following common environmental sampling practice
+            </Text>
+            <Text className="text-sm text-gray-500">
+              • "NO TDI" (No Tolerable Daily Intake) and "NO RfD" (No Reference
+              Dose) are counted as 0
+            </Text>
           </View>
         </View>
 
         <Text className="text-sm text-gray-500 mt-2">
-          Values shown are total exposure across all selected products per serving
+          Values shown are total exposure across all selected products per
+          serving
         </Text>
       </SafeAreaView>
     );
