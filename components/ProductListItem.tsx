@@ -1,5 +1,6 @@
 import { Text, View, Pressable, Image } from 'react-native';
 import { ProductType } from "../app/types";
+import { padImageName } from "../utils/imageNumberPadding";
 
 type ProductListItemProps = {
   item: ProductType;
@@ -7,6 +8,7 @@ type ProductListItemProps = {
 };
 
 export function ProductListItem({ item, onPress }: ProductListItemProps) {
+  
   return (
     <Pressable
       onPress={() => onPress(item)}
@@ -14,8 +16,8 @@ export function ProductListItem({ item, onPress }: ProductListItemProps) {
     >
       <View className="w-12 h-12 mr-4 bg-gray-100 rounded-lg overflow-hidden">
         <Image
-          source={{ 
-            uri: `https://www.plasticlist.org/_next/image?url=/images/products/${item.blinded_photo}&w=1080&q=75` 
+          source={{
+            uri: `https://www.plasticlist.org/_next/image?url=%2Fimages%2Fproducts%2F${padImageName(item.product_id)}.jpg&w=1080&q=75`,
           }}
           className="w-full h-full"
         />

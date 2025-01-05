@@ -4,7 +4,8 @@ import { useRef, useState } from 'react';
 import { ProductType } from '../app/types';
 import { MapPin } from 'lucide-react-native';
 import { Calendar } from 'lucide-react-native';
-
+import { Image } from 'expo-image';
+import { padImageName } from '../utils/imageNumberPadding';
 type Props = {
   product: ProductType;
   onBack: () => void;
@@ -268,65 +269,69 @@ export function ProductDetail({ product, onBack }: Props) {
     { label: 'EPA Adult %RfD (70kg)', value: 'epa_70kg' },
   ];
 
+ 
   return (
     <ScrollView className="flex-1 m-4">
       <Pressable onPress={onBack} className="flex-row items-center mb-4">
         <Text className="text-blue-500">← Back to list</Text>
       </Pressable>
 
-      <View className="mb-6">
-        <Text className="text-3xl font-bold mb-4">{product.product}</Text>
+      <Text className="text-3xl font-bold mb-4">{product.product}</Text>
+      
+      <View className="mb-6 mx-4">
+        <Image
+          source={{
+            uri: `https://www.plasticlist.org/_next/image?url=%2Fimages%2Fproducts%2F${padImageName(product.product_id)}.jpg&w=1080&q=75`,
+          }}
+          style={{
+            width: '100%',
+            height: 250,
+            borderRadius: 12,
+            backgroundColor: '#f3f4f6'
+          }}
+          contentFit="cover"
+        />
+      </View>
 
-        {/* <View className="flex  items-start mb-3 gap-2">
-          <Text className=" mr-2">📅 Best Before</Text>
-          <Text className="text-gray-600 pl-4">{product.expiration_date}</Text>
-        </View>
-
-        <View className="flex items-start mb-3 gap-2">
-          <Text className=" mr-2 text-base">📍 Collected From</Text>
-          <Text className="text-gray-600 pl-4"></Text>
-        </View> */}
-
-        <View className="flex items-start gap-4 mb-6">
-          <View className="flex flex-row items-center gap-2">
-            <Calendar className="text-blue-500" />
-            <View>
-              <Text className="font-medium">Best Before</Text>
-              <Text className="text-gray-600">{product.expiration_date}</Text>
-            </View>
-          </View>
-          <View className="flex flex-row items-center gap-2">
-            <MapPin className="text-blue-500" />
-            <View>
-              <Text className="font-medium">Collected From</Text>
-              <Text className="text-gray-600 text-wrap">
-                {product.collected_at}
-              </Text>
-            </View>
+      <View className="flex items-start gap-4 mb-6">
+        <View className="flex flex-row items-center gap-2">
+          <Calendar className="text-blue-500" />
+          <View>
+            <Text className="font-medium">Best Before</Text>
+            <Text className="text-gray-600">{product.expiration_date}</Text>
           </View>
         </View>
-
-        <View className="mb-4">
-          <Text className="mb-2">Select Measurement View</Text>
-          {renderPicker()}
+        <View className="flex flex-row items-center gap-2">
+          <MapPin className="text-blue-500" />
+          <View>
+            <Text className="font-medium">Collected From</Text>
+            <Text className="text-gray-600 text-wrap">
+              {product.collected_at}
+            </Text>
+          </View>
         </View>
+      </View>
 
-        {renderChemicalGroup("Phthalates", getPhthalatesData())}
-        {renderChemicalGroup("Bisphenols", getBisphenolsData())}
-        {renderChemicalGroup(
-          "Alternative Plasticizers",
-          getAlternativePlasticizersData()
-        )}
+      <View className="mb-4">
+        <Text className="mb-2">Select Measurement View</Text>
+        {renderPicker()}
+      </View>
 
-        <View className="mt-4 mb-8">
-          <Text className="text-gray-500 text-sm">
-            Sample tested using {product.analysis_method_phthalates} method for
-            phthalates, substitutes, and bisphenols.
-          </Text>
-          <Text className="text-gray-500 text-sm">
-            Serving size analyzed: {product.serving_size_g}g
-          </Text>
-        </View>
+      {renderChemicalGroup("Phthalates", getPhthalatesData())}
+      {renderChemicalGroup("Bisphenols", getBisphenolsData())}
+      {renderChemicalGroup(
+        "Alternative Plasticizers",
+        getAlternativePlasticizersData()
+      )}
+
+      <View className="mt-4 mb-8">
+        <Text className="text-gray-500 text-sm">
+          Sample tested using {product.analysis_method_phthalates} method for
+          phthalates, substitutes, and bisphenols.
+        </Text>
+        <Text className="text-gray-500 text-sm">
+          Serving size analyzed: {product.serving_size_g}g
+        </Text>
       </View>
     </ScrollView>
   );

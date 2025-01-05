@@ -37,12 +37,12 @@ export default function Faq() {
   return (
     <SafeAreaView className="flex-1 bg-[#f8fcf8] px-4 pt-8">
       <View className="flex justify-between items-center">
-        <View className="w-full flex-row justify-between items-baseline mb-4">
-          <View className="flex-1 items-center">
+        <View className="w-full flex-row items-baseline mb-2">
+          <View className="flex-1 justify-between ml-4">
             <Text className="text-3xl font-bold">FAQ</Text>
           </View>
-          <Link href="/technical-faq">
-            <Text className="text-xl font-bold">Compounds</Text>
+          <Link href="/technical-faq" className="text-sm mr-2">
+            <Text className="text-sm text-[#5b8c5b]">Compounds</Text>
           </Link>
         </View>
       </View>

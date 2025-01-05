@@ -11,7 +11,7 @@ type TeamMemberProps = {
   current?: string;
   link?: string;
   status?: string;
-  imageUrl?: string;
+  image?: string;
 };
 
 const TeamMember = ({
@@ -21,13 +21,13 @@ const TeamMember = ({
   affiliation,
   link,
   status,
-  imageUrl,
+  image,
 }: TeamMemberProps) => (
   <Pressable onPress={() => link && Linking.openURL(link)} className="mb-4">
     <View className="flex-row items-center gap-3">
-      {imageUrl ? (
+      {image ? (
         <Image
-          source={{ uri: imageUrl }}
+          source={{ uri: image }}
           className="w-12 h-12 rounded-full"
           contentFit="cover"
           style={{ width: 75, height: 75, borderRadius: 100 }}
