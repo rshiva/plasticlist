@@ -51,7 +51,7 @@ export function ProductDetail({ product, onBack }: Props) {
     </View>
   );
 
-  function getPhthalatesData(): getPhthalatesProps {
+  function getPhthalatesData() {
     switch (measurementView) {
       case 'ng_g':
         return {
