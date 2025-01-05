@@ -1,8 +1,8 @@
-import { View, Text, TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native';
+import { View, Text, Pressable, ScrollView, SafeAreaView } from 'react-native';
 import { useState } from 'react';
 import { ProductType } from '../app/types';
-import { FlashList } from '@shopify/flash-list';
-import { PRODUCTS } from '../data/products';
+import { SearchProducts } from './SearchProducts';
+import { Link } from 'expo-router';
 
 type SelectedProduct = {
   product: ProductType;
@@ -13,20 +13,7 @@ type ChemicalGroup = 'phthalates' | 'bisphenols' | 'alternatives';
 type ExposureLevel = 'safe' | 'moderate' | 'high';
 
 export function ExposureCalculator() {
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>([]);
-  const [showResults, setShowResults] = useState(false);
-
-  function handleSearch(text: string) {
-    setSearchQuery(text);
-    setShowResults(text.length > 0);
-  }
-
-  function getFilteredProducts() {
-    return PRODUCTS.filter(product =>
-      product.product.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }
 
   function addProduct(product: ProductType) {
     const existing = selectedProducts.find(p => p.product.id === product.id);
@@ -35,8 +22,6 @@ export function ExposureCalculator() {
     } else {
       setSelectedProducts([...selectedProducts, { product, quantity: 1 }]);
     }
-    setShowResults(false);
-    setSearchQuery('');
   }
 
   function updateQuantity(productId: string, newQuantity: number) {
@@ -68,20 +53,21 @@ export function ExposureCalculator() {
     };
 
     products.forEach(({ product, quantity }) => {
-      // Convert string values to numbers and handle '<' cases
       Object.keys(totals).forEach(chemical => {
         const value = product[`${chemical}_ng_serving`];
         let numericValue = 0;
         
-        if (typeof value === 'number') {
-          numericValue = value;
-        } else if (typeof value === 'string') {
-          if (value.startsWith('<')) {
-            // For values like "<10", use half the threshold
+        if (typeof value === 'string') {
+          if (value === '<LOQ' || value === 'NO TDI' || value === 'NO RfD') {
+            numericValue = 0;
+          } else if (value.startsWith('<')) {
+            // For values like "<3700", use half the threshold
             numericValue = parseFloat(value.substring(1)) / 2;
-          } else if (value.toLowerCase() !== '<loq') {
+          } else {
             numericValue = parseFloat(value) || 0;
           }
+        } else if (typeof value === 'number') {
+          numericValue = value;
         }
         
         totals[chemical] += numericValue * quantity;
@@ -113,7 +99,7 @@ export function ExposureCalculator() {
     const totals = calculateTotalExposure(selectedProducts);
 
     return (
-      <SafeAreaView  className="mt-6">
+      <SafeAreaView className="mt-6">
         <Text className="text-xl font-bold mb-4">Total Daily Exposure</Text>
         
         {/* Phthalates */}
@@ -206,6 +192,15 @@ export function ExposureCalculator() {
             })}
         </View>
 
+        <View className="bg-gray-50 rounded-lg p-4 mt-4">
+          <Text className="text-sm text-gray-600 font-medium mb-2">Understanding the measurements:</Text>
+          <View className="space-y-2">
+            <Text className="text-sm text-gray-500">• Values marked as "&lt;LOQ" (Below Limit of Quantification) are counted as 0</Text>
+            <Text className="text-sm text-gray-500">• Values marked as "&lt;X" (e.g., "&lt;3700") use half of that threshold, following common environmental sampling practice</Text>
+            <Text className="text-sm text-gray-500">• "NO TDI" (No Tolerable Daily Intake) and "NO RfD" (No Reference Dose) are counted as 0</Text>
+          </View>
+        </View>
+
         <Text className="text-sm text-gray-500 mt-2">
           Values shown are total exposure across all selected products per serving
         </Text>
@@ -218,33 +213,7 @@ export function ExposureCalculator() {
       <ScrollView className="flex-1 p-4">
         <Text className="text-2xl font-bold mb-4">Exposure Calculator</Text>
 
-        {/* Search Input */}
-        <View className="mb-4">
-          <TextInput
-            value={searchQuery}
-            onChangeText={handleSearch}
-            placeholder="Search products to add..."
-            className="p-3 bg-white rounded-lg border border-gray-200"
-          />
-
-          {/* Search Results */}
-          {showResults && (
-            <View className="mt-2 h-60 bg-white rounded-lg border border-red-200">
-              <FlashList
-                data={getFilteredProducts()}
-                estimatedItemSize={50}
-                renderItem={({ item }) => (
-                  <Pressable
-                    onPress={() => addProduct(item)}
-                    className="p-3 border-b border-gray-100"
-                  >
-                    <Text>{item.product}</Text>
-                  </Pressable>
-                )}
-              />
-            </View>
-          )}
-        </View>
+        <SearchProducts onProductSelect={addProduct} />
 
         {/* Selected Products List */}
         <View className="mb-4">
@@ -254,7 +223,9 @@ export function ExposureCalculator() {
               key={product.id}
               className="flex-row items-center justify-between p-3 bg-white rounded-lg mb-2"
             >
-              <Text className="flex-1">{product.product}</Text>
+              <Link href={`/product/${product.id}`}>
+                <Text className="flex-1">{product.product}</Text>
+              </Link>
               <View className="flex-row items-center">
                 <Pressable
                   onPress={() => updateQuantity(product.id, quantity - 1)}
