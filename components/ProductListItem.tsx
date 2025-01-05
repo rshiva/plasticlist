@@ -22,19 +22,58 @@ export function ProductListItem({ item, onPress }: ProductListItemProps) {
       </View>
       <View className="flex-1">
         <Text className="text-lg font-semibold">{item.product}</Text>
-        <Text
-          className={`text-sm ${
-            Number(item.DEHP_equivalents_ng_g) < 50
-              ? "text-green-600"
-              : Number(item.DEHP_equivalents_ng_g) < 100
-                ? "text-yellow-600"
-                : "text-red-600"
-          }`}
-        >
-          DEHP Level: {item.DEHP_equivalents_ng_g}
-        </Text>
+        {renderDEHPLevel(item.DEHP_equivalents_ng_g)}
       </View>
       <Text className="text-gray-400">→</Text>
     </Pressable>
   );
-} 
+}
+
+const renderDEHPLevel = (value: string) => {
+  // Handle <LOQ case
+  if (value.toLowerCase() === '<loq') {
+    return (
+      <Text className="text-sm text-green-600">
+        DEHP Level: Very Low (Below Measurable Levels)
+      </Text>
+    );
+  }
+
+  // Handle <X case
+  if (value.startsWith('<')) {
+    const threshold = parseFloat(value.substring(1));
+    return (
+      <Text className="text-sm text-green-600">
+        DEHP Level: Below {threshold} ng/g
+      </Text>
+    );
+  }
+
+  // Handle numerical values
+  const numericValue = parseFloat(value);
+  if (!isNaN(numericValue)) {
+    let colorClass = 'text-green-600';
+    let levelText = 'Low';
+    
+    if (numericValue > 100) {
+      colorClass = 'text-red-600';
+      levelText = 'High';
+    } else if (numericValue > 50) {
+      colorClass = 'text-yellow-600';
+      levelText = 'Medium';
+    }
+
+    return (
+      <Text className={`text-sm ${colorClass}`}>
+        DEHP Level: {numericValue} ng/g ({levelText})
+      </Text>
+    );
+  }
+
+  // Fallback for unexpected values
+  return (
+    <Text className="text-sm text-gray-600">
+      DEHP Level: {value}
+    </Text>
+  );
+}; 

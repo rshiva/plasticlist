@@ -42,6 +42,13 @@ export default function Layout() {
           headerShown: false,
         }}
       />
+      <Tabs.Screen
+        name="(screens)/product/[id]"
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
     </Tabs>
   );
 }

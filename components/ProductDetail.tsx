@@ -10,6 +10,7 @@ type Props = {
   onBack: () => void;
 };
 
+
 type MeasurementView = 
   | 'ng_g'
   | 'ng_serving'
@@ -32,7 +33,7 @@ export function ProductDetail({ product, onBack }: Props) {
     pickerRef.current.blur();
   }
 
-  const renderChemicalGroup = (title: string, data: { [key: string]: string }) => (
+  const renderChemicalGroup = (title: string, data: { [key: string]: string | number }) => (
     <View className="bg-white rounded-lg p-4 mb-4">
       <View className="flex-row items-center mb-2">
         <View className="w-6 h-6 mr-2">
@@ -50,7 +51,7 @@ export function ProductDetail({ product, onBack }: Props) {
     </View>
   );
 
-  const getPhthalatesData = () => {
+  function getPhthalatesData(): getPhthalatesProps {
     switch (measurementView) {
       case 'ng_g':
         return {
@@ -105,7 +106,7 @@ export function ProductDetail({ product, onBack }: Props) {
     }
   };
 
-  const getBisphenolsData = () => {
+  function getBisphenolsData(): { [key: string]: string | number } {
     switch (measurementView) {
       case 'ng_g':
         return {
@@ -144,11 +145,15 @@ export function ProductDetail({ product, onBack }: Props) {
           'BPF': product.BPF_percent_tdi_70_kg_epa,
         };
       default:
-        return {};
+        return {
+          'BPA': 0,
+          'BPS': 0,
+          'BPF': 0,
+        };
     }
   };
 
-  const getAlternativePlasticizersData = () => {
+  function getAlternativePlasticizersData(): { [key: string]: string | number } {
     switch (measurementView) {
       case 'ng_g':
         return {
@@ -193,7 +198,12 @@ export function ProductDetail({ product, onBack }: Props) {
           'DIDA': product.DIDA_percent_tdi_70_kg_epa,
         };
       default:
-        return {};
+        return {
+          'DEHT': 0,
+          'DEHA': 0,
+          'DINCH': 0,
+          'DIDA': 0,
+        };
     }
   };
 
