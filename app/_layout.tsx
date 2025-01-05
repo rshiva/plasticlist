@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router/";
 import Feather from "@expo/vector-icons/Feather";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 
 export default function Layout() {
@@ -16,11 +17,11 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
-        name="faq"
+        name="calculate"
         options={{
-          title: "FAQ",
+          title: "calculate",
           tabBarIcon: ({ color, size }) => (
-            <Feather name="help-circle" color={color} size={size} />
+            <AntDesign name="calculator" size={24} color="black" />
           ),
           headerShown: false,
         }}
